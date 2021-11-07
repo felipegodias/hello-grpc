@@ -15,7 +15,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: out/vcpkg_installed
-          key: ${{ runner.os }}-vcpkg-pkgs
+          key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
       - name: "Setup Microsoft build"
         uses: microsoft/setup-msbuild@v1.0.3
       - name: "Setup MSVC development tools"

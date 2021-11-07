@@ -1,5 +1,7 @@
 {
-  "name": "helloworld",
+  "name": "hellgrpc",
   "version-semver": "0.1.0",
-  "dependencies": []
+  "dependencies": [
+    "grpc"
+  ]
 }

@@ -1,0 +1,26 @@
+name: Ubuntu Build
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
+      - name: Cache Packages
+        uses: actions/cache@v2
+        with:
+          path: out/vcpkg_installed
+          key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
+      - name: Install dependencies
+        run: sudo apt install -y zip unzip build-essential pkg-config ninja-build
+      - name: Generate ninja project
+        run: cmake -S . -B "out" -G "Ninja" -DCMAKE_BUILD_TYPE:STRING="Release"
+      - name: Build
+        run: cmake --build "out"
+      - name: Run Tests
+        run: ctest --test-dir "out" -VV

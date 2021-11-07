@@ -38,7 +38,8 @@ void RunServer()
     server->Wait();
 }
 
-void main()
+int main()
 {
     RunServer();
+    return EXIT_SUCCESS;
 }

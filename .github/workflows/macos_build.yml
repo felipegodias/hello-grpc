@@ -1,0 +1,26 @@
+name: Macos Build
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
+      - name: Cache Packages
+        uses: actions/cache@v2
+        with:
+          path: out/vcpkg_installed
+          key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
+      - name: Install dependencies
+        run: brew install ninja
+      - name: Generate ninja project
+        run: cmake -S . -B "out" -G "Ninja" -DCMAKE_BUILD_TYPE:STRING="Release"
+      - name: Build
+        run: cmake --build "out"
+      - name: Run Tests
+        run: ctest --test-dir "out" -VV
